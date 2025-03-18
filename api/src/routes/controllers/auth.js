@@ -10,6 +10,12 @@ const oauth2Client = new google.auth.OAuth2(
 
 const scopes = ['https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/gmail.readonly'];
 
+const drive = google.drive({ 
+    version: 'v3', 
+    auth: oauth2Client 
+});
+const sheets = google.sheets('v4')
+
 async function getAccessToken() {
     try {
       const tokens = await oauth2Client.getAccessToken();
@@ -32,24 +38,25 @@ module.exports = {
     redirect: async (code) => {
         const { tokens } = await oauth2Client.getToken(code);
         await oauth2Client.setCredentials(tokens);
-        console.log("cuenta vinculada re copado")
-        const drive = google.drive({ 
-            version: 'v3', 
-            auth: oauth2Client 
-        });
-        const sheets = google.sheets('v4')
-        const sheetName = 'Hoja 1';
-        const range = `${sheetName}!A1:B2`;
-        await sheets.spreadsheets.get({
+        console.log("cuenta vinculada re copado");
+    },
+    getData: async (sheetName,cells) => {
+        const range = `${sheetName}!${cells}`;
+        let data = await sheets.spreadsheets.values.get({
             spreadsheetId,
             auth: oauth2Client,
             range,
-        }, (err, response) => {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log(response.data.values);
-            }
         });
-    }   
+        return data.data;
+    },
+    updateData: async (sheetName, cells, values, valueInputOption) => {
+        const body = { values };
+        const range = `${sheetName}!${cells}`;
+       await sheets.spreadsheets.values.update({
+            spreadsheetId,
+            range,
+            valueInputOption: valueInputOption,
+            resource: body,
+        });
+    }
 }
