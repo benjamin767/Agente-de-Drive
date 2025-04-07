@@ -10,7 +10,8 @@ app.on("ready", () => {
         height: 800,
         title: "Agentes de Excel",
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
         }
     });
     console.log(__dirname);

@@ -2,9 +2,35 @@ const getData = document.querySelector("button");
 const updateDAta = document.querySelector("#update");
 const open_box = document.querySelector("#box");
 const view_messages = document.querySelector("#messages");
+const view_img = document.querySelector("#img");
 let allMessages;
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        view_img.addEventListener("click", async (e) => {
+            e.preventDefault();
+            let data_img = allMessages.all_messages.filter(data => {
+                console.log(data.payload.parts);
+                return data.payload.parts ? 
+                data.payload.parts: false;
+            });
+            let messageId = data_img[0].messageId;
+            img_id = data_img[0].payload.parts;
+            let filename = img_id[1].filename;
+            img_id = img_id[1].body.attachmentId;
+            // let res = await fetch(`http://localhost:3002/get_attachment?attachmentId=${img_id}&messageId=${messageId}`);
+            // const stream = res.data;
+            // console.log(res)
+            // const blob = new Blob([stream], { type: 'application/pdf' });
+            // const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');  
+            a.href = (`http://localhost:3002/get_attachment?attachmentId=${img_id}&messageId=${messageId}&filename=${filename}`)
+            a.download = `${filename}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        })
+        
         open_box.addEventListener("click", async (e) => {
             e.preventDefault();
             let res = await fetch("http://localhost:3002/get_inbox");
@@ -23,6 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 body: JSON.stringify({ messages: allMessages })
             });
             res = await res.json();
+            allMessages = res;
             console.log(res)
             // console.log(`Remitente: ${messageData.payload.headers[0].value}`);
             // console.log(`Asunto: ${messageData.payload.headers[1].value}`);
