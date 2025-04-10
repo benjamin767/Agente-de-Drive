@@ -1,7 +1,6 @@
 const { google } = require('googleapis');
 const fs = require('fs');
 const { CLIENT_SECRET, REDIRECT_URL, CLIENT_ID, spreadsheetId, email_password } = process.env;
-const FormData = require('form-data');
 
 const oauth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -35,13 +34,13 @@ module.exports = {
       id: attachmentId,
       auth: oauth2Client
     });
-    console.log(res)
+    
     const buffer = Buffer.from(res.data.data, 'base64');
     // fs.writeFileSync(`archivo.pdf`, buffer);
     // Descargar archivo adjunto
     // const fileStream = fs.createWriteStream('archivo.pdf');
     // fileStream.write(fileBuffer);
-    console.log(buffer);
+    
     return buffer;
   },
   get_inbox: async () => {
