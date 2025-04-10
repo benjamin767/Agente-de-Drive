@@ -3,10 +3,17 @@ const updateDAta = document.querySelector("#update");
 const open_box = document.querySelector("#box");
 const view_messages = document.querySelector("#messages");
 const view_img = document.querySelector("#img");
+const data = document.querySelector("#data");
 let allMessages;
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        data.addEventListener("click", async (e) => {
+            e.preventDefault();
+            let data = await fetch("http://localhost:3002/pdf/ultimate");
+            data = await data.json();
+            console.log(data);
+        })
         view_img.addEventListener("click", async (e) => {
             e.preventDefault();
             let data_img = allMessages.all_messages.filter(data => {
