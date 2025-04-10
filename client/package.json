@@ -15,8 +15,7 @@
     "bootstrap": "^5.3.3",
     "concurrently": "^8.2.2",
     "electron-reload": "^2.0.0-alpha.1",
-    "electron-squirrel-startup": "^1.0.1",
-    "file-saver": "^2.0.5"
+    "electron-squirrel-startup": "^1.0.1"
   },
   "devDependencies": {
     "@electron/fuses": "^1.8.0",
