@@ -10,6 +10,7 @@ const {
     get_attachment,
 } = require("./controllers/auth");
 
+
 router.get("/", async (req,res) => {
     const url = await generateAuth();
     console.log("ingresando...");
